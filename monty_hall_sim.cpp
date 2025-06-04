@@ -25,8 +25,9 @@
 
 int parse_num_trials(const int& argc, const char* const argv[], int* num_trials) {
     for(int i = 1; i < argc; i++) {
+        std::string::size_type end_pos; 
         try {
-            num_trials[i-1] = std::stoi(argv[i]);
+            num_trials[i-1] = std::stoi(argv[i], &end_pos);
         }
         catch (std::invalid_argument e) {
             std::cerr << "monty_hall_sim: invalid argument, num_trials needs to be a number greater than 1." << std::endl; 
@@ -40,11 +41,18 @@ int parse_num_trials(const int& argc, const char* const argv[], int* num_trials)
             std::cerr << e.what() << std::endl;
             return 1; 
         }
+        catch(std::exception e) {
+            std::cerr << "monty_hall_sim: error: " << e.what() << std::endl; 
+        }
 
         if(num_trials[i-1] < 1) {
             std::cerr << "monty_hall_sim: invalid argument, num_trials needs to be a number greater than 1. " << std::endl;
             std::cerr << "monty_hall_sim: Got " << argv[i] << " instead." << std::endl;
             return 1;
+        }
+
+        if(end_pos < strlen(argv[i])) {
+            std::cerr << "monty_hall_sim: warning: got  " << argv[i] << ", interpreted as " << num_trials[i-1] << "." << std::endl;
         }
 
     }
