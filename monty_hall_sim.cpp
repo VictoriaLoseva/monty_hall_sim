@@ -143,5 +143,8 @@ int main(int argc, char* argv[]) {
 
     print_results(num_sims, num_trials, wins);
 
+    delete[] wins; 
+    delete[] num_trials;
+
     return 0; 
 }
